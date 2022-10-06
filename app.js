@@ -1,6 +1,7 @@
 const path = require("path");
 const express = require("express");
 const AppError = require("./utils/AppError");
+const cors = require('cors')
 const helmet = require("helmet");
 const rateLimit = require('express-rate-limit')
 const mongoSanitize = require('express-mongo-sanitize')
@@ -14,6 +15,7 @@ const orderRouter = require("./routes/orderRouter");
 const app = express();
 
 //Golobal Middleware
+app.use(cors());
 app.use(helmet());
 
 const limiter = rateLimit({
@@ -43,13 +45,13 @@ app.use("/api/uploads", uploadRouter);
 app.use(`/uploads`, express.static(`uploads`));
 // app.use(express.static(path.join(__dirname, './uploads')));
 
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("frontend/build"));
+// if (process.env.NODE_ENV === "production") {
+//   app.use(express.static("frontend/build"));
 
-  app.get("*", (req, res) =>
-    res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
-  );
-}
+//   app.get("*", (req, res) =>
+//     res.sendFile(path.resolve(__dirname, "frontend", "build", "index.html"))
+//   );
+// }
 
 app.all("*", (req, res, next) => {
   // const error = new Error (`can't find ${req.originalUrl} on this server`)
