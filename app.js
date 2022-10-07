@@ -44,8 +44,9 @@ app.use("/api/uploads", uploadRouter);
 
 // app.use(`/uploads`, express.static(`uploads`));
 // app.use(express.static(path.resolve(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-app.use(express.static(path.join(__dirname, './uploads')));
+// app.use(express.static(path.join(__dirname, './uploads')));
 
 // if (process.env.NODE_ENV === "production") {
 //   app.use(express.static("frontend/build"));
