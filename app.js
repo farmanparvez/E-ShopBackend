@@ -35,7 +35,8 @@ app.use(mongoSanitize())
 app.use(xss())
 // app.use(express.static(path.join(__dirname, 'uploads')));
 
-// app.get('/', (req, res) => res.send('server is running'))
+app.get('/', (req, res) => res.send('server is running'))
+// app.use("/", authRouter);
 app.use("/api", authRouter);
 app.use("/api", userRouter);
 app.use("/api", productRouter);
