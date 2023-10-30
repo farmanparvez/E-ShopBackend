@@ -14,8 +14,13 @@ const uploadRouter = require("./routes/uploadRouter");
 const orderRouter = require("./routes/orderRouter");
 const app = express();
 
+
+const corsOption = {
+  origin: ['http://localhost:5173', 'http://localhost:3000'],
+};
+
+app.use(cors(corsOption));
 //Golobal Middleware
-app.use(cors());
 app.use(helmet());
 
 const limiter = rateLimit({
