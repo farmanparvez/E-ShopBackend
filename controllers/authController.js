@@ -21,7 +21,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
   token = generateToken(user._id);
 
   const cookieOption = {
-    expire: new Date(
+    expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     // secure: true,
@@ -50,9 +50,11 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!isMatch) return next(new AppError("Email or password not correct"));
   const token = generateToken(user._id);
 
+  // console.log(typeof (process.env.EXPIRES_IN))
+
   const cookieOption = {
-    expire: new Date(
-      Date.now() + process.env.EXPIRES_IN * 24 * 60 * 60 * 1000
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     // secure: true,
     httpOnly: true,
