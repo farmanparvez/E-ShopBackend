@@ -21,7 +21,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
   token = generateToken(user._id);
 
   const cookieOption = {
-    expires: new Date(
+    expire: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     // secure: true,
@@ -51,14 +51,16 @@ exports.login = catchAsync(async (req, res, next) => {
   const token = generateToken(user._id);
 
   const cookieOption = {
-    expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    expire: new Date(
+      Date.now() + process.env.EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
     // secure: true,
     httpOnly: true,
   };
   if (process.env.NODE_ENV === "production") cookieOption.secure = true;
   res.cookie("jwt", token, cookieOption);
+
+
 
   res.status(200).json({
     status: "Success",
