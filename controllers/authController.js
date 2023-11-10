@@ -5,7 +5,7 @@ const AppError = require("../utils/AppError");
 var CryptoJS = require("crypto-js");
 
 exports.signUp = catchAsync(async (req, res, next) => {
-  const { username, email, password, confirmPassword, isAdmin } = req.body;
+  const { username, email, password, confirmPassword } = req.body;
 
   const auth = await Auth.findOne({ email });
 
@@ -16,7 +16,7 @@ exports.signUp = catchAsync(async (req, res, next) => {
     email,
     password,
     confirmPassword,
-    isAdmin,
+    isAdmin: false,
   });
 
   token = generateToken(user._id);
@@ -51,8 +51,6 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!isMatch) return next(new AppError("Email or password not correct"));
   const token = generateToken(user._id);
 
-  // console.log(typeof (process.env.EXPIRES_IN))
-
   const cookieOption = {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -62,8 +60,14 @@ exports.login = catchAsync(async (req, res, next) => {
   };
   if (process.env.NODE_ENV === "production") cookieOption.secure = true;
   res.cookie("jwt", token, cookieOption);
+
+  const userDetails = {
+    email: user.email,
+    isAdmin: user.isAdmin
+  }
+
   // Encrypt
-  var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(user), process.env.JWT_SECRET).toString();
+  var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(userDetails), process.env.JWT_SECRET).toString();
 
   res.status(200).json({
     status: "Success",
