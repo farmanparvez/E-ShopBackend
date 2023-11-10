@@ -25,7 +25,8 @@ const corsOptions = {
 }
 app.use(cors(corsOptions));
 //Golobal Middleware
-app.use(helmet());
+// app.use(helmet());
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 
 const limiter = rateLimit({
   max: 100,
