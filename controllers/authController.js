@@ -2,6 +2,7 @@ const catchAsync = require("../utils/catchAsync");
 const Auth = require("../models/auth");
 const generateToken = require("../utils/generateToken");
 const AppError = require("../utils/AppError");
+var CryptoJS = require("crypto-js");
 
 exports.signUp = catchAsync(async (req, res, next) => {
   const { username, email, password, confirmPassword, isAdmin } = req.body;
@@ -61,13 +62,13 @@ exports.login = catchAsync(async (req, res, next) => {
   };
   if (process.env.NODE_ENV === "production") cookieOption.secure = true;
   res.cookie("jwt", token, cookieOption);
-
-
+  // Encrypt
+  var ciphertext = CryptoJS.AES.encrypt(JSON.stringify(user), process.env.JWT_SECRET).toString();
 
   res.status(200).json({
     status: "Success",
     message: "Login Successfully",
     token,
-    user,
+    user: ciphertext,
   });
 });
