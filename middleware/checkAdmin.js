@@ -3,7 +3,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/AppError");
 
 const checkAdmin = catchAsync(async (req, res, next) => {
-  if (req.user && req.user.isAdmin) {
+  if (req.user && req.user.role === "1301") {
     next();
   } else {
     next(new AppError("Not Authorized", 400));

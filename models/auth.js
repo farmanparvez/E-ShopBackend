@@ -25,10 +25,15 @@ const authSchema = new mongoose.Schema({
       message: 'Password not same'
     },
   },
-  isAdmin: {
-    type: Boolean,
-    required: true,
-    default: false
+  // isAdmin: {
+  //   type: Boolean,
+  //   required: true,
+  //   default: false
+  // },
+  role: {
+    type: String,
+    enum: ["1205", "1301"],
+    default: "1205",
   },
   date: {
     type: Date,
@@ -43,8 +48,8 @@ authSchema.pre("save", async function (next) {
   next();
 });
 
-authSchema.methods.correctPassword = async function(reqUserPassword, password ) {
-    return await bcrypt.compare(reqUserPassword, password)
+authSchema.methods.correctPassword = async function (reqUserPassword, password) {
+  return await bcrypt.compare(reqUserPassword, password)
 }
 
 module.exports = Auth = mongoose.model("Auth", authSchema);
