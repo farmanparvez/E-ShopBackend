@@ -13,7 +13,7 @@ exports.userProfile = catchAsync(async (req, res, next) => {
 exports.users = catchAsync(async (req, res, next) => {
     // console.log(req.user)
     // if(!req.user.isAdmin) return next(new AppError('Not Authorized', 400))
-    const auth = await Auth.find().select("-password");;
+    const auth = await Auth.find().select("-password");
     res.status(200).json({ data: auth });
 });
 

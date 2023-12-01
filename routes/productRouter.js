@@ -9,16 +9,20 @@ productRouter
   .route("/admin/user/product")
   .post(protect, checkAdmin, productController.createProduct)
   .get(protect, checkAdmin, productController.getAdminProductByID);
+
 productRouter
   .route("/admin/user/product/:id")
   .delete(protect, checkAdmin, productController.deleteAdminProductByID)
   .patch(protect, checkAdmin, productController.updateAdminProductByID);
+
 productRouter.route("/products").get(productController.getProduct);
+
 productRouter
   .route("/topratingproducts")
   .get(productController.getTopRatedProducts);
 
 productRouter.route("/product/:id").get(productController.getProductByID);
+
 productRouter
   .route("/product/reviews/:id")
   .post(protect, productController.productReview);
