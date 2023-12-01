@@ -32,8 +32,8 @@ const authSchema = new mongoose.Schema({
   // },
   role: {
     type: String,
-    enum: ["1205", "1301"],
-    default: "1205",
+    enum: ["1287", "3497"],
+    default: "1287",
   },
   date: {
     type: Date,
