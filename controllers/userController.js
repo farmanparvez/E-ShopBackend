@@ -28,8 +28,8 @@ exports.deleteUserByID = catchAsync(async (req, res, next) => {
 exports.updateUserByID = catchAsync(async (req, res, next) => {
     // console.log(req.user)
     // if(!req.user.isAdmin) return next(new AppError('Not Authorized', 400))
-    const { username, email, isAdmin } = req.body
-    const data = { username, email, isAdmin }
+    const { username, email, role } = req.body
+    const data = { username, email, role }
     await Auth.findByIdAndUpdate(req.params.id, {$set: data}, {new: true, runValidators: true})
     // if(!user) return next(new AppError('No user found to delete', 400))
     res.status(200).json({ status: 'Success', message: 'User updated Successfully' });
