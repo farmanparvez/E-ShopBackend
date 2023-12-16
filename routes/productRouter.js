@@ -26,6 +26,7 @@ productRouter.route("/product/:id").get(productController.getProductByID);
 productRouter
   .route("/product/reviews/:id")
   .post(protect, productController.productReview);
+  
 productRouter
   .route("/product/productType/:type")
   .get(productController.getProductByType);
