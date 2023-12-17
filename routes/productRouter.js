@@ -16,6 +16,7 @@ productRouter
   .patch(protect, checkAdmin, productController.updateAdminProductByID);
 
 productRouter.route("/products").get(productController.getProduct);
+productRouter.route("/products/cart").get(protect, productController.getCartItems).post(protect, productController.addProductInToCart);
 
 productRouter
   .route("/topratingproducts")
@@ -26,7 +27,7 @@ productRouter.route("/product/:id").get(productController.getProductByID);
 productRouter
   .route("/product/reviews/:id")
   .post(protect, productController.productReview);
-  
+
 productRouter
   .route("/product/productType/:type")
   .get(productController.getProductByType);
