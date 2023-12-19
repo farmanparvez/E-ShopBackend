@@ -19,7 +19,7 @@ const app = express();
 //   origin: ['http://localhost:5173', 'http://localhost:3000'],
 // };
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://localhost:3000'],
+  origin: ['http://localhost:5173', 'http://localhost:3000', "https://e-eommerce-vite.vercel.app/"],
   credentials: true,            //access-control-allow-credentials:true
   optionSuccessStatus: 200
 }
@@ -33,6 +33,7 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 100,
   message: 'Too many request from thi IP, Please try again in an hour'
 })
+
 // limit no of request per hour
 app.use('/api', limiter)
 
