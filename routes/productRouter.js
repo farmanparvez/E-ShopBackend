@@ -16,21 +16,23 @@ productRouter
   .patch(protect, checkAdmin, productController.updateAdminProductByID);
 
 productRouter.route("/products").get(productController.getProduct);
-productRouter.route("/products/cart").get(protect, productController.getCartItems).post(protect, productController.addProductInToCart);
 
 productRouter
-  .route("/topratingproducts")
-  .get(productController.getTopRatedProducts);
+  .route("/products/cart")
+  .get(protect, productController.getCartItems)
+  .post(protect, productController.addProductInToCart)
+  .delete(protect, productController.deleteProductFromCart)
+
+productRouter.route("/products/cart/:id").delete(protect, productController.deleteProductFromCart)
+
+productRouter.route("/topratingproducts").get(productController.getTopRatedProducts);
 
 productRouter.route("/product/:id").get(productController.getProductByID);
 
-productRouter
-  .route("/product/reviews/:id")
-  .post(protect, productController.productReview);
+productRouter.route("/product/reviews/:id").post(protect, productController.productReview);
 
-productRouter
-  .route("/product/productType/:type")
-  .get(productController.getProductByType);
+productRouter.route("/product/productType/:type").get(productController.getProductByType);
+
 // productRouter.route('/products').get(productController.getProduct)
 // productRouter.route('/admin/user/product').post(protect, checkAdmin, productController.createProduct).get(productController.getProduct)
 // productRouter.route('/user').get(protect, userController.userProfile)

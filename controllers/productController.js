@@ -189,10 +189,6 @@ exports.getCartItems = catchAsync(async (req, res, next) => {
 exports.addProductInToCart = catchAsync(async (req, res, next) => {
     const { name, price, image, quantity, userID, adminID, productID } = req.body
     const items = await Cart.findOne({ productID })
-    // console.log(items)
-    // console.log("req.user._id", req.user._id?.toString())
-    // console.log("userID", userID)
-
     if (req.user._id?.toString() === userID && items) {
         res.status(200).json({
             status: 'Success',
@@ -210,3 +206,29 @@ exports.addProductInToCart = catchAsync(async (req, res, next) => {
     })
 
 })
+
+exports.deleteProductFromCart = catchAsync(async (req, res, next) => {
+
+    const cart = await Cart.findById(req.params.id)
+
+    if (cart.userID.toString() !== req.user._id.toString()) return next(new AppError('Your are not authorized login in again....', 400))
+
+    await Product.findByIdAndDelete(req.params.id)
+    res.status(200).json({
+        status: 'Success',
+        message: 'Product deleted successfully'
+    })
+
+})
+
+// // const {name, price, image, brand, category, countInStock, numReviews, description} = req.body
+// const product = await Product.findById(req.params.id)
+// // console.log('product', product.user._id)
+// // console.log('user', req.user._id)
+// if (product.user.toString() !== req.user._id.toString()) return next(new AppError('Your are not authorized login in again....', 400))
+// // console.log(product._id !== req.user._id)
+// await Product.findByIdAndDelete(req.params.id)
+// res.status(200).json({
+//     status: 'Success',
+//     message: 'Product deleted successfully'
+// })
