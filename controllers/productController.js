@@ -213,7 +213,7 @@ exports.deleteProductFromCart = catchAsync(async (req, res, next) => {
 
     if (cart.userID.toString() !== req.user._id.toString()) return next(new AppError('Your are not authorized login in again....', 400))
 
-    await Product.findByIdAndDelete(req.params.id)
+    await Cart.findByIdAndDelete(req.params.id)
     res.status(200).json({
         status: 'Success',
         message: 'Product deleted successfully'
