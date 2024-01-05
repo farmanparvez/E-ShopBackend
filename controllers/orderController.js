@@ -1,5 +1,6 @@
 const catchAsync = require("../utils/catchAsync");
 const Order = require("../models/orderModal");
+const Cart = require('../models/cartModal')
 const AppError = require("../utils/AppError");
 
 exports.addOrder = catchAsync(async (req, res, next) => {
@@ -12,7 +13,7 @@ exports.addOrder = catchAsync(async (req, res, next) => {
     shippingPrice,
     totalPrice,
   } = req.body;
-  console.log(req.body)
+  // console.log(req.body)
   const order = await Order.create({
     orderItems,
     user: req.user._id,
@@ -23,6 +24,15 @@ exports.addOrder = catchAsync(async (req, res, next) => {
     shippingPrice,
     totalPrice,
   });
+
+  // console.log('orderItems', orderItems)
+  const id = orderItems.map(res => res?._id)
+  console.log('id', id)
+
+  const val = await Cart.deleteMany({
+    _id: { $in: id }
+  })
+
   res.status(200).json({
     status: "Success",
     message: "Order Placed Successfully",
@@ -31,7 +41,7 @@ exports.addOrder = catchAsync(async (req, res, next) => {
 });
 
 
-exports.getOrderDetails = catchAsync( async(req, res, next) => {
+exports.getOrderDetails = catchAsync(async (req, res, next) => {
   const order = await Order.findById(req.params.id)
   res.status(200).json({
     status: 'Success',
@@ -40,9 +50,9 @@ exports.getOrderDetails = catchAsync( async(req, res, next) => {
   })
 })
 
-exports.updateOrderToPaid = catchAsync( async(req, res, next) => {
+exports.updateOrderToPaid = catchAsync(async (req, res, next) => {
 
-  const  { id, status, update_time, payer } = req.body
+  const { id, status, update_time, payer } = req.body
   // const order = await Order.findById(req.params.id)
   // console.log(req.body)
   // console.log(req.params.id)
@@ -57,9 +67,9 @@ exports.updateOrderToPaid = catchAsync( async(req, res, next) => {
       email_address: payer.email_address
     }
   }
-  const order = await Order.findByIdAndUpdate(req.params.id, { $set: data }, { new: true, runValidators: true})
+  const order = await Order.findByIdAndUpdate(req.params.id, { $set: data }, { new: true, runValidators: true })
   console.log(order)
-  if(!order) return new (new AppError('Order Not Found')) 
+  if (!order) return new (new AppError('Order Not Found'))
 
   res.status(200).json({
     status: 'Success',
@@ -68,9 +78,9 @@ exports.updateOrderToPaid = catchAsync( async(req, res, next) => {
   })
 })
 
-exports.updateOrderToDelivered = catchAsync( async(req, res, next) => {
+exports.updateOrderToDelivered = catchAsync(async (req, res, next) => {
 
-  const  { id, status, update_time, payer } = req.body
+  const { id, status, update_time, payer } = req.body
   // const order = await Order.findById(req.params.id)
   // console.log(req.body)
   // console.log(req.params.id)
@@ -79,9 +89,9 @@ exports.updateOrderToDelivered = catchAsync( async(req, res, next) => {
     isDelivered: true,
     deliveredAt: Date.now(),
   }
-  const order = await Order.findByIdAndUpdate(req.params.id, { $set: data }, { new: true, runValidators: true})
+  const order = await Order.findByIdAndUpdate(req.params.id, { $set: data }, { new: true, runValidators: true })
   // console.log(order)
-  if(!order) return new (new AppError('Order Not Found')) 
+  if (!order) return new (new AppError('Order Not Found'))
 
   res.status(200).json({
     status: 'Success',
@@ -90,7 +100,7 @@ exports.updateOrderToDelivered = catchAsync( async(req, res, next) => {
   })
 })
 
-exports.getOrders = catchAsync( async(req, res, next) => {
+exports.getOrders = catchAsync(async (req, res, next) => {
   const orders = await Order.find()
   res.status(200).json({
     count: orders.length,
@@ -100,8 +110,8 @@ exports.getOrders = catchAsync( async(req, res, next) => {
   })
 })
 
-exports.getOrderByUserId = catchAsync( async(req, res, next) => {
-  const orders = await Order.find({ user: req.user._id})
+exports.getOrderByUserId = catchAsync(async (req, res, next) => {
+  const orders = await Order.find({ user: req.user._id })
   res.status(200).json({
     count: orders.length,
     status: 'success',
@@ -110,8 +120,8 @@ exports.getOrderByUserId = catchAsync( async(req, res, next) => {
   })
 })
 
-exports.getOrderByAdminId = catchAsync( async(req, res, next) => {
-  const orders = await Order.find({ user: req.user._id})
+exports.getOrderByAdminId = catchAsync(async (req, res, next) => {
+  const orders = await Order.find({ user: req.user._id })
   res.status(200).json({
     count: orders.length,
     status: 'success',
