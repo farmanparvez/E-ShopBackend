@@ -19,7 +19,7 @@ const app = express();
 //   origin: ['http://localhost:5173', 'http://localhost:3000'],
 // };
 const corsOptions = {
-  origin: ["https://e-shop-gamma-ten.vercel.app", 'http://localhost:5173', 'http://localhost:3000', ],
+  origin: ["https://e-shop-gamma-ten.vercel.app", 'https://click-collect-navy.vercel.app', 'http://localhost:5173', 'http://localhost:3000', ],
   credentials: true,            //access-control-allow-credentials:true
   optionSuccessStatus: 200
 }
